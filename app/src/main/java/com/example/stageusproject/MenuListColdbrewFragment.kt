@@ -91,10 +91,12 @@ class MenuListColdbrewFragment : Fragment() {
                         content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl[nameNumber])
                         val nameToken = content.findViewById<TextView>(text[contentNumber]).text.toString().split('\n')
                         linear.setOnClickListener{
+                            val tempCart = InCartData(nameToken[0], nameToken[1], imageData.toString())
+
                             val builder = AlertDialog.Builder(context)
                             builder.setTitle(nameToken[0]).setMessage("추가하시겠습니까?")
                                 .setPositiveButton("확인",
-                                DialogInterface.OnClickListener{dialog, id -> myService?.setCart(nameToken[0],nameToken[1], imageData.toString()) })
+                                DialogInterface.OnClickListener{dialog, id -> myService?.setCart(tempCart)})
                                 .setNegativeButton("취소",
                                 DialogInterface.OnClickListener{dialog, id -> })
                             builder.show()
@@ -116,11 +118,11 @@ class MenuListColdbrewFragment : Fragment() {
                             content.findViewById<TextView>(text[contentNumber]).text.toString()
                                 .split('\n')
                         linear.setOnClickListener {
-
+                            val tempCart = InCartData(nameToken[0], nameToken[1], imageData.toString())
                             val builder = AlertDialog.Builder(context)
                             builder.setTitle(nameToken[0]).setMessage("추가하시겠습니까?")
                                 .setPositiveButton("확인",
-                                    DialogInterface.OnClickListener{dialog, id -> myService?.setCart(nameToken[0],nameToken[1], imageData.toString()) })
+                                    DialogInterface.OnClickListener{dialog, id -> myService?.setCart(tempCart)})
                                 .setNegativeButton("취소",
                                     DialogInterface.OnClickListener{dialog, id -> })
                             builder.show()
@@ -140,10 +142,11 @@ class MenuListColdbrewFragment : Fragment() {
                     content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl[nameNumber])
                     val nameToken = content.findViewById<TextView>(text[contentNumber]).text.toString().split('\n')
                     linear.setOnClickListener{
+                        val tempCart = InCartData(nameToken[0], nameToken[1], imageData.toString())
                         val builder = AlertDialog.Builder(context)
                         builder.setTitle(nameToken[0]).setMessage("추가하시겠습니까?")
                             .setPositiveButton("확인",
-                                DialogInterface.OnClickListener{dialog, id -> myService?.setCart(nameToken[0],nameToken[1], imageData.toString()) })
+                                DialogInterface.OnClickListener{dialog, id -> myService?.setCart(tempCart)})
                             .setNegativeButton("취소",
                                 DialogInterface.OnClickListener{dialog, id -> })
                         builder.show()

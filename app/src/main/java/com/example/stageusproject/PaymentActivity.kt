@@ -57,22 +57,20 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     fun initData(){
-        val name = myService?.getName()
-        val price = myService?.getPrice()
-        val imageUrl = myService?.getImage()
+        val cartList = myService?.getCart()
         var rowNumber = 0
         var totalPrice = 0
 
-        if(name != null) {
-            rowNumber = Math.ceil((name.size.toDouble() / 3)).toInt() //열의 개수
-            for(index in 0 until name.size){
-                totalPrice += price!![index].toInt()
+        if(cartList != null) {
+            rowNumber = Math.ceil((cartList.size.toDouble() / 3)).toInt() //열의 개수
+            for(index in 0 until cartList.size){
+                totalPrice += cartList[index].price.toInt()
             }
         }
-        initEvent(name, imageUrl, rowNumber, totalPrice)
+        initEvent(cartList, rowNumber, totalPrice)
     }
 
-    fun initEvent(name : ArrayList<String>?, imageUrl : ArrayList<String>? , rowNumber : Int, totalPrice : Int){
+    fun initEvent(cartList : ArrayList<InCartData>?, rowNumber : Int, totalPrice : Int){
         val table = findViewById<TableLayout>(R.id.paymentTable)
         val backBtn = findViewById<Button>(R.id.backBtn)
         val cardBtn = findViewById<Button>(R.id.cardBtn)
@@ -95,17 +93,17 @@ class PaymentActivity : AppCompatActivity() {
         for(index in 0 until rowNumber){
             val content = layoutInflater.inflate(R.layout.menu_list_view, table, false)
             if(index+1 == rowNumber){
-                if(name!!.size % 3 == 0){
+                if(cartList!!.size % 3 == 0){
                     for(contentNumber in 0 until 3){
-                        content.findViewById<TextView>(text[contentNumber]).text = name!![nameNumber]
-                        content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl!![nameNumber].toInt())
+                        content.findViewById<TextView>(text[contentNumber]).text = cartList[contentNumber].name
+                        content.findViewById<ImageView>(image[contentNumber]).setImageResource(cartList[contentNumber].image.toInt())
                         nameNumber++
                     }
                 }
                 else{
-                    for(contentNumber in 0 until name!!.size % 3){
-                        content.findViewById<TextView>(text[contentNumber]).text = name!![nameNumber]
-                        content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl!![nameNumber].toInt())
+                    for(contentNumber in 0 until cartList!!.size % 3){
+                        content.findViewById<TextView>(text[contentNumber]).text = cartList[contentNumber].name
+                        content.findViewById<ImageView>(image[contentNumber]).setImageResource(cartList[contentNumber].image.toInt())
                         nameNumber++
                     }
 
@@ -114,8 +112,8 @@ class PaymentActivity : AppCompatActivity() {
             }
             else {
                 for(contentNumber in 0 until 3){
-                    content.findViewById<TextView>(text[contentNumber]).text = name!![nameNumber]
-                    content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl!![nameNumber].toInt())
+                    content.findViewById<TextView>(text[contentNumber]).text = cartList!![contentNumber].name
+                    content.findViewById<ImageView>(image[contentNumber]).setImageResource(cartList!![contentNumber].image.toInt())
                     nameNumber++
                 }
             }

@@ -60,15 +60,18 @@ class MenuListFrappuccinoFragment : Fragment() {
         )
         val text = arrayListOf<Int>()
         val image = arrayListOf<Int>()
-        var nameNumber = 0
-        val imageUrl = arrayListOf<Int>()
         val linearArray = arrayListOf<Int>()
+        val imageUrl = arrayListOf<Int>()
+
+
+        var nameNumber = 0 //출력될 menu의 번호
         val rowNumber = Math.ceil((menuInfo.size.toDouble() / 3)).toInt() //열의 개수
         val table = myView.findViewById<TableLayout>(R.id.coffeeTable) //부모 tablelayout 선언
 
         for(index in 0 until menuInfo.size){
             imageUrl.add(context?.resIdByName(menuInfo[index][2], "mipmap")!!)
         }
+
         for(index in 0 until 3){
             text.add(context?.resIdByName("text"+(index+1), "id")!!)
             image.add(context?.resIdByName("image"+(index+1), "id")!!)
@@ -86,13 +89,17 @@ class MenuListFrappuccinoFragment : Fragment() {
                         content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl[nameNumber])
                         val nameToken = content.findViewById<TextView>(text[contentNumber]).text.toString().split('\n')
                         linear.setOnClickListener{
+                            val tempCart = InCartData(nameToken[0], nameToken[1], imageData.toString())
+
                             val builder = AlertDialog.Builder(context)
                             builder.setTitle(nameToken[0]).setMessage("추가하시겠습니까?")
                                 .setPositiveButton("확인",
-                                    DialogInterface.OnClickListener{ dialog, id -> myService?.setCart(nameToken[0],nameToken[1], imageData.toString()) })
+                                    DialogInterface.OnClickListener{dialog, id -> myService?.setCart(tempCart)})
                                 .setNegativeButton("취소",
-                                    DialogInterface.OnClickListener{ dialog, id -> })
+                                    DialogInterface.OnClickListener{dialog, id -> })
                             builder.show()
+//                            val dataInterface = context as CartData
+//                            dataInterface.sendData(nameToken[0], nameToken[1], imageData.toString())
                         }
                         nameNumber++
                     }
@@ -109,18 +116,22 @@ class MenuListFrappuccinoFragment : Fragment() {
                             content.findViewById<TextView>(text[contentNumber]).text.toString()
                                 .split('\n')
                         linear.setOnClickListener {
+                            val tempCart = InCartData(nameToken[0], nameToken[1], imageData.toString())
                             val builder = AlertDialog.Builder(context)
                             builder.setTitle(nameToken[0]).setMessage("추가하시겠습니까?")
                                 .setPositiveButton("확인",
-                                    DialogInterface.OnClickListener{dialog, id -> myService?.setCart(nameToken[0],nameToken[1], imageData.toString()) })
+                                    DialogInterface.OnClickListener{dialog, id -> myService?.setCart(tempCart)})
                                 .setNegativeButton("취소",
                                     DialogInterface.OnClickListener{dialog, id -> })
                             builder.show()
+//                            val dataInterface = context as CartData
+//                            dataInterface.sendData(nameToken[0], nameToken[1], imageData.toString())
                         }
                         nameNumber++
                     }
                 }
             }
+
             else {
                 for(contentNumber in 0 until 3){
                     val linear = content.findViewById<LinearLayout>(linearArray[contentNumber])
@@ -129,13 +140,16 @@ class MenuListFrappuccinoFragment : Fragment() {
                     content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl[nameNumber])
                     val nameToken = content.findViewById<TextView>(text[contentNumber]).text.toString().split('\n')
                     linear.setOnClickListener{
+                        val tempCart = InCartData(nameToken[0], nameToken[1], imageData.toString())
                         val builder = AlertDialog.Builder(context)
                         builder.setTitle(nameToken[0]).setMessage("추가하시겠습니까?")
                             .setPositiveButton("확인",
-                                DialogInterface.OnClickListener{dialog, id -> myService?.setCart(nameToken[0],nameToken[1], imageData.toString()) })
+                                DialogInterface.OnClickListener{dialog, id -> myService?.setCart(tempCart)})
                             .setNegativeButton("취소",
                                 DialogInterface.OnClickListener{dialog, id -> })
                         builder.show()
+//                        val dataInterface = context as CartData
+//                        dataInterface.sendData(nameToken[0], nameToken[1], imageData.toString())
                     }
                     nameNumber++
                 }
@@ -146,3 +160,4 @@ class MenuListFrappuccinoFragment : Fragment() {
 
     }
 }
+

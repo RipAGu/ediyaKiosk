@@ -3,11 +3,13 @@ package com.example.stageusproject
 import android.app.AlertDialog
 import android.app.Service
 import android.content.*
+import android.content.Intent.FLAG_ACTIVITY_NO_USER_ACTION
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.widget.Button
+import androidx.core.app.ServiceCompat.stopForeground
 import androidx.core.content.ContextCompat
 
 class StartAcivity : AppCompatActivity() {
@@ -29,7 +31,9 @@ class StartAcivity : AppCompatActivity() {
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
         intent = Intent(this, CartService::class.java)
+
         ContextCompat.startForegroundService(this, intent)
+
     }
 
     //홈버튼에서 복귀했을 때 notification종료 후 서비스 재시작
@@ -37,9 +41,8 @@ class StartAcivity : AppCompatActivity() {
         super.onResume()
         intent = Intent(this, CartService::class.java)
         stopService(intent)
+
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
-
-
     }
 
 
@@ -52,6 +55,7 @@ class StartAcivity : AppCompatActivity() {
         val delCartBtn = findViewById<Button>(R.id.delCartBtn)
         startBtn.setOnClickListener{
             val intent = Intent(applicationContext, OptionActivity::class.java)
+            intent.addFlags(FLAG_ACTIVITY_NO_USER_ACTION)
             startActivity(intent)
         }
         delCartBtn.setOnClickListener{

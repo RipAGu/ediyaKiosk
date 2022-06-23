@@ -10,7 +10,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import java.util.ArrayList
 
-//클래스 이름 수정하기 clear
 
 interface DataFromFragment{ //coffeefreagment에서 올 Data
     fun sendData(requestType: String, requestData: ArrayList<String>?)
@@ -89,5 +88,8 @@ class OptionActivity : AppCompatActivity(), DataFromFragment, DataFromRemover, C
         setContentView(R.layout.option_list_layout)
         val menuFragment = MainMenuFragment()
         supportFragmentManager.beginTransaction().replace(R.id.fragmentBox, menuFragment).commit()
+        var service = Intent(this, CartService::class.java)
+        bindService(service, connection, Context.BIND_AUTO_CREATE)
     }
+
 }
