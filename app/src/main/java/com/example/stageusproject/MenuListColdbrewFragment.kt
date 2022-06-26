@@ -13,7 +13,10 @@ import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
+import com.google.gson.JsonElement
 import java.lang.Math.ceil
+
 
 class MenuListColdbrewFragment : Fragment() {
     var myService: CartService? = null
@@ -51,7 +54,7 @@ class MenuListColdbrewFragment : Fragment() {
         throw Resources.NotFoundException()
     }
 
-    fun initEvent(myView : View){
+    fun initEvent(myView : View) {
         val menuInfo = arrayOf( //DB
             arrayOf("콜드 브루", "흑당 콜드브루", "blacksugarcoldbrew", "5000"),
             arrayOf("콜드 브루", "연유 콜드 브루", "milkcoldbrew", "4500"),
@@ -59,6 +62,35 @@ class MenuListColdbrewFragment : Fragment() {
             arrayOf("콜드 브루", "콜드브루 니트로", "coldbrew_nitro", "6000"),
             arrayOf("콜드 브루", "화이트 비엔나", "coldbrew_white", "4500")
         )
+        R.mipmap.blacksugarcoldbrew
+
+        val menuData = "{" +
+                "'menuList' : [" +
+                "{'name' : '흑당 콜드브루', 'price' : 5000, 'image' : blacksugarcoldbrew}," +
+                "{'name' : '연유 콜드부루', 'price' : 4500, 'image' : milkcoldbrew}," +
+                "{'name' : '콜드부루 라떼', 'price' : 5000, 'image' : coldbrew_lattee}," +
+                "{'name' : '콜드브루 니트로', 'price' : 6500, 'image' : coldbrew_nitro}," +
+                "{'name' : '화이트 비엔나', 'price' : 4500, 'image' : coldbrew_white}," +
+                "]}"
+
+        R.mipmap.coldbrew_lattee
+
+        data class MenuContents(
+            val name : String,
+            val price : Int,
+            val image : String
+        )
+
+        data class MenuList(
+            val menuList : ArrayList<MenuContents>
+        )
+
+
+        val gson = Gson()
+
+        val menuGson = gson.fromJson(menuData, MenuList::class.java)
+
+
         // text, image, linear값을 동적으로 할당하기위해 residbyname함수에서 받아올 data들
         val text = arrayListOf<Int>()
         val image = arrayListOf<Int>()
@@ -67,11 +99,12 @@ class MenuListColdbrewFragment : Fragment() {
 
 
         var nameNumber = 0 //출력될 menu의 번호
-        val rowNumber = ceil((menuInfo.size.toDouble() / 3)).toInt() //열의 개수
+        val rowNumber = ceil((((menuGson.menuList.size.toDouble())-1) / 3)).toInt() //열의 개수
+        Log.d(rowNumber.toString(), "D")
         val table = myView.findViewById<TableLayout>(R.id.coffeeTable) //부모 tablelayout 선언
 
-        for(index in 0 until menuInfo.size){
-            imageUrl.add(context?.resIdByName(menuInfo[index][2], "mipmap")!!)
+        for(index in 0 until menuGson.menuList.size-1){
+            imageUrl.add(context?.resIdByName(menuGson.menuList[index].image, "mipmap")!!)
         }
 
         for(index in 0 until 3){
@@ -83,11 +116,12 @@ class MenuListColdbrewFragment : Fragment() {
         for(index in 0 until rowNumber){ //동적생성 시작
             val content = layoutInflater.inflate(R.layout.menu_list_view, table, false)
             if(index+1 == rowNumber){
-                if(menuInfo.size % 3 == 0){
+                if((menuGson.menuList.size-1) % 3 == 0){
                     for(contentNumber in 0 until 3){
                         val imageData = imageUrl[nameNumber]
                         val linear = content.findViewById<LinearLayout>(linearArray[contentNumber])
-                        content.findViewById<TextView>(text[contentNumber]).text = "${menuInfo[nameNumber][1]}\n${menuInfo[nameNumber][3]}"
+                        content.findViewById<TextView>(text[contentNumber]).text =
+                            "${menuGson.menuList[nameNumber].name}\n${menuGson.menuList[nameNumber].price}"
                         content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl[nameNumber])
                         val nameToken = content.findViewById<TextView>(text[contentNumber]).text.toString().split('\n')
                         linear.setOnClickListener{
@@ -107,11 +141,11 @@ class MenuListColdbrewFragment : Fragment() {
                     }
                 }
                 else {
-                    for (contentNumber in 0 until menuInfo.size % 3) {
+                    for (contentNumber in 0 until (menuGson.menuList.size-1) % 3) {
                         val imageData = imageUrl[nameNumber]
                         val linear = content.findViewById<LinearLayout>(linearArray[contentNumber])
                         content.findViewById<TextView>(text[contentNumber]).text =
-                            "${menuInfo[nameNumber][1]}\n${menuInfo[nameNumber][3]}"
+                            "${menuGson.menuList[nameNumber].name}\n${menuGson.menuList[nameNumber].price}"
                         content.findViewById<ImageView>(image[contentNumber])
                             .setImageResource(imageUrl[nameNumber])
                         val nameToken =
@@ -138,7 +172,8 @@ class MenuListColdbrewFragment : Fragment() {
                 for(contentNumber in 0 until 3){
                     val linear = content.findViewById<LinearLayout>(linearArray[contentNumber])
                     val imageData = imageUrl[nameNumber]
-                    content.findViewById<TextView>(text[contentNumber]).text = "${menuInfo[nameNumber][1]}\n${menuInfo[nameNumber][3]}"
+                    content.findViewById<TextView>(text[contentNumber]).text =
+                        "${menuGson.menuList[nameNumber].name}\n${menuGson.menuList[nameNumber].price}"
                     content.findViewById<ImageView>(image[contentNumber]).setImageResource(imageUrl[nameNumber])
                     val nameToken = content.findViewById<TextView>(text[contentNumber]).text.toString().split('\n')
                     linear.setOnClickListener{

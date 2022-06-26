@@ -122,3 +122,9 @@ class CartService : Service() {
 }
 
 data class InCartData(var name: String, var price: String, var image: String)
+
+data class MenuType(
+    val name : String,
+    val price : String,
+    val image : Int
+)
