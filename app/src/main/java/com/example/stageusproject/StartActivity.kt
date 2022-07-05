@@ -53,6 +53,7 @@ class StartActivity : AppCompatActivity() {
         applicationContext.bindService(service, connection, Context.BIND_AUTO_CREATE)
         val startBtn = findViewById<Button>(R.id.startBtn)
         val delCartBtn = findViewById<Button>(R.id.delCartBtn)
+        val logoutBtn = findViewById<Button>(R.id.logoutBtn)
         startBtn.setOnClickListener{
             val intent = Intent(applicationContext, OptionActivity::class.java)
             intent.addFlags(FLAG_ACTIVITY_NO_USER_ACTION)
@@ -65,6 +66,16 @@ class StartActivity : AppCompatActivity() {
                     DialogInterface.OnClickListener{ dialog, id -> myService?.deleteCart()})
                 .setNegativeButton("취소",
                     DialogInterface.OnClickListener{ dialog, id -> })
+            builder.show()
+        }
+
+        logoutBtn.setOnClickListener{
+            myService?.deleteCart()
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Notice").setMessage("로그아웃 하시겠습니까?")
+                .setPositiveButton("확인",
+                DialogInterface.OnClickListener{dialog, id -> finish()})
+                .setNegativeButton("취소", null)
             builder.show()
         }
     }

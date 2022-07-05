@@ -48,7 +48,7 @@ class MainCoffeeFragment : Fragment() {
 
     fun initData(view: View){
         var category: List<CategoryName>
-        retrofitHttp.getCategory("en123")
+        retrofitHttp.getCategory("en")
             .enqueue(object: Callback<CategoryData>{
                 override fun onFailure(call: Call<CategoryData>, t: Throwable) {
                     Log.d("result", "Request : ${t}")

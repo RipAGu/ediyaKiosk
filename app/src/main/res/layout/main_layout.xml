@@ -53,6 +53,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"/>
 
+    <Button
+        android:id="@+id/logoutBtn"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/delCartBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/round_rect"
+        android:text="로그아웃"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        />
+
 
 
 

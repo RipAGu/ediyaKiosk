@@ -38,6 +38,7 @@
 
 
             <EditText
+                android:maxLength="10"
                 android:id="@+id/idText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -58,6 +59,8 @@
         </LinearLayout>
 
         <EditText
+            android:inputType="textPassword"
+            android:maxLength="10"
             android:id="@+id/pwText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,6 +69,8 @@
             android:layout_marginRight="20dp"
             />
         <EditText
+            android:inputType="textPassword"
+            android:maxLength="10"
             android:id="@+id/pwDupText"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
@@ -75,6 +80,7 @@
             android:layout_marginRight="20dp"
             />
         <EditText
+            android:maxLength="10"
             android:id="@+id/nameText"
             android:layout_marginTop="20dp"
 
@@ -85,6 +91,7 @@
             android:layout_marginRight="20dp"
             />
         <EditText
+            android:maxLength="11"
             android:id="@+id/contactText"
             android:layout_marginTop="20dp"
 
