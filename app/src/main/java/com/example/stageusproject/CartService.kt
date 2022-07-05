@@ -1,7 +1,6 @@
 package com.example.stageusproject
 
 import android.app.*
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -19,6 +18,7 @@ class CartService : Service() {
     val myBinder: IBinder = MyBinder()
     var totalPrice : Int = 0
     var cartList = ArrayList<InCartData>()
+    var id = ""
 
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -77,9 +77,9 @@ class CartService : Service() {
     private fun generateForegroundNotification() {
         calTotalPrice()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //안드로이드 버전이 일정이상일 시 channel 필요
-            val intentMainLanding = Intent(this, StartAcivity::class.java)
+            val intentMainLanding = Intent(this, StartActivity::class.java)
             val pendingIntent =
-                PendingIntent.getActivity(this, 0, intentMainLanding, 0) //다시돌아오겠다
+                PendingIntent.getActivity(this, 0, intentMainLanding, 0)
             iconNotification = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             if (mNotificationManager == null) {
                 mNotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -121,10 +121,15 @@ class CartService : Service() {
 
 }
 
-data class InCartData(var name: String, var price: String, var image: String)
+data class InCartData(var name: String, var price: Int, var image: String)
 
-data class MenuType(
-    val name : String,
-    val price : String,
-    val image : Int
+data class OrderListContent(
+    var name : String,
+    var count : Int,
+    var sum_price : Int
 )
+
+data class OrderList(
+    var order_list: List<OrderListContent>
+)
+

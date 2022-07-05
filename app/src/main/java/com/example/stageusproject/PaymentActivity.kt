@@ -1,5 +1,6 @@
 package com.example.stageusproject
 
+import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -8,16 +9,28 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 class PaymentActivity : AppCompatActivity() {
+    val textViewList = listOf(R.id.text1, R.id.text2, R.id.text3)
+    val imageViewList = listOf(R.id.image1, R.id.image2, R.id.image3)
     var myService: CartService? = null
+    val orderListData = OrderListData("3", 3 ,3)
+    lateinit var retrofit : Retrofit
+    lateinit var retrofitHttp : RetrofitService
+
     private var isBound = false
     private val connection = object : ServiceConnection {
 
@@ -45,15 +58,14 @@ class PaymentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.payment_layout)
         val intent = Intent(this, CartService::class.java)
+        initRetrofit()
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 
 
-    fun Context.resIdByName(resIdName: String?, resType: String): Int{ //R.id 경로를 int형으로 바꿔주는 함수
-        resIdName?.let {
-            return resources.getIdentifier(it, resType, packageName)
-        }
-        throw Resources.NotFoundException()
+    fun initRetrofit(){
+        retrofit = RetrofitClient.initRetrofit()!!
+        retrofitHttp = retrofit.create(RetrofitService::class.java)
     }
 
     fun initData(){
@@ -64,10 +76,61 @@ class PaymentActivity : AppCompatActivity() {
         if(cartList != null) {
             rowNumber = Math.ceil((cartList.size.toDouble() / 3)).toInt() //열의 개수
             for(index in 0 until cartList.size){
-                totalPrice += cartList[index].price.toInt()
+                totalPrice += cartList[index].price
             }
         }
         initEvent(cartList, rowNumber, totalPrice)
+    }
+
+    fun setView(cartList : ArrayList<InCartData>, content : View, contentNumber : Int, nameNumber : Int){
+        content.findViewById<TextView>(textViewList[contentNumber]).text = cartList[nameNumber].name
+        Glide.with(content).load(cartList[nameNumber].image).into(content.findViewById(imageViewList[contentNumber]))
+    }
+
+    fun setPaymentEvent(cartList : ArrayList<InCartData>?, totalPrice: Int){
+        val id = myService?.id
+        Log.d("size", cartList!!.size.toString())
+        if(cartList.size == 0){
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Warning").setMessage("장바구니가 비었습니다").setPositiveButton("확인",null)
+            builder.show()
+        }
+        else{
+            val orderList : Array<OrderListData?> = arrayOfNulls(cartList.size)
+            for(index in 0 until cartList.size){
+                val orderListData = OrderListData(cartList[index].name, 1, cartList[index].price)
+                orderList[index] = orderListData
+            }
+
+            var requestData: HashMap<String, Any> = HashMap()
+            requestData["id"] = id!!
+            requestData["order_list"] = orderList
+            requestData["total_price"] = totalPrice
+            retrofitHttp.postOrder(requestData)
+                .enqueue(object : Callback<PostOrder>{
+                    override fun onFailure(call: Call<PostOrder>, t: Throwable) {
+                        Log.d("result", "Request : ${t}")
+                    }
+
+                    override fun onResponse(
+                        call: Call<PostOrder>,
+                        response: Response<PostOrder>
+                    ) {
+                        if(response.body()!!.success){
+                            Log.d("result", "success")
+                            Log.d("menu?", orderList.toString())
+                        }
+                        else{
+                            Log.d("result", response.body()!!.message)
+                        }
+                    }
+                })
+            Log.d("id", id!!)
+            intent = Intent(applicationContext, OrderCompleteActivity::class.java)
+            intent.putExtra("id", id)
+            startActivity(intent)
+        }
+
     }
 
     fun initEvent(cartList : ArrayList<InCartData>?, rowNumber : Int, totalPrice : Int){
@@ -76,44 +139,30 @@ class PaymentActivity : AppCompatActivity() {
         val cardBtn = findViewById<Button>(R.id.cardBtn)
         val cashBtn = findViewById<Button>(R.id.cashBtn)
         val textTotalPrice = findViewById<TextView>(R.id.totalPrice)
-        val text = arrayListOf<Int>()
-        val image = arrayListOf<Int>()
-        val linearArray = arrayListOf<Int>()
+
         var nameNumber = 0
-
-
         textTotalPrice.text = "총 금액 : ${totalPrice}원"
 
-        for(index in 0 until 3){
-            text.add(applicationContext.resIdByName("text"+(index+1), "id")!!)
-            image.add(applicationContext.resIdByName("image"+(index+1), "id")!!)
-            linearArray.add(applicationContext.resIdByName("linear"+(index+1), "id")!!)
-        }
         //동적할당 시작
         for(index in 0 until rowNumber){
             val content = layoutInflater.inflate(R.layout.menu_list_view, table, false)
             if(index+1 == rowNumber){
                 if(cartList!!.size % 3 == 0){
                     for(contentNumber in 0 until 3){
-                        content.findViewById<TextView>(text[contentNumber]).text = cartList[contentNumber].name
-                        content.findViewById<ImageView>(image[contentNumber]).setImageResource(cartList[contentNumber].image.toInt())
+                        setView(cartList, content, contentNumber, nameNumber)
                         nameNumber++
                     }
                 }
                 else{
                     for(contentNumber in 0 until cartList!!.size % 3){
-                        content.findViewById<TextView>(text[contentNumber]).text = cartList[contentNumber].name
-                        content.findViewById<ImageView>(image[contentNumber]).setImageResource(cartList[contentNumber].image.toInt())
+                        setView(cartList, content, contentNumber, nameNumber)
                         nameNumber++
                     }
-
                 }
-
             }
             else {
                 for(contentNumber in 0 until 3){
-                    content.findViewById<TextView>(text[contentNumber]).text = cartList!![contentNumber].name
-                    content.findViewById<ImageView>(image[contentNumber]).setImageResource(cartList!![contentNumber].image.toInt())
+                    setView(cartList!!, content, contentNumber, nameNumber)
                     nameNumber++
                 }
             }
@@ -124,12 +173,11 @@ class PaymentActivity : AppCompatActivity() {
             finish()
         }
         cardBtn.setOnClickListener{
-            intent = Intent(applicationContext, OrderCompleteActivity::class.java)
-            startActivity(intent)
+            setPaymentEvent(cartList, totalPrice)
+
         }
         cashBtn.setOnClickListener{
-            intent = Intent(applicationContext, OrderCompleteActivity::class.java)
-            startActivity(intent)
+            setPaymentEvent(cartList, totalPrice)
         }
     }
 }

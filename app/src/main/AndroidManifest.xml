@@ -3,6 +3,8 @@
     package="com.example.stageusproject">
     <uses-permission
         android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:allowBackup="true"
@@ -12,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StageusProject">
         <activity
-            android:name=".StartAcivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,11 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".StartActivity"/>
         <activity android:name=".OptionActivity"/>
         <activity android:name=".MenuListActivity"/>
         <activity android:name=".RemoveMenuActivity"/>
         <activity android:name=".PaymentActivity"/>
         <activity android:name=".OrderCompleteActivity"/>
+        <activity android:name=".SignupActivity"/>
         <service android:name=".CartService"/>
 
     </application>

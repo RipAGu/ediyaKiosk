@@ -7,7 +7,9 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import java.util.ArrayList
 
 
@@ -27,6 +29,9 @@ class OptionActivity : AppCompatActivity(), DataFromFragment, DataFromRemover, C
     var priceInCart = arrayListOf<String>()
     var imageInCart = arrayListOf<String>()
     var myService: CartService? = null
+
+
+
     private var isBound = false
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
@@ -86,10 +91,14 @@ class OptionActivity : AppCompatActivity(), DataFromFragment, DataFromRemover, C
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.option_list_layout)
+        Glide.with(this).load(R.mipmap.ediyalogo2).into(findViewById(R.id.optionTopLogo))
+
         val menuFragment = MainMenuFragment()
         supportFragmentManager.beginTransaction().replace(R.id.fragmentBox, menuFragment).commit()
         var service = Intent(this, CartService::class.java)
         bindService(service, connection, Context.BIND_AUTO_CREATE)
     }
+
+
 
 }

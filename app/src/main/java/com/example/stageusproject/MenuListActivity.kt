@@ -46,13 +46,15 @@ class MenuListActivity : AppCompatActivity(){
         setContentView(R.layout.menu_list_layout)
         val service = Intent(this, CartService::class.java)
         applicationContext.bindService(service, connection, Context.BIND_AUTO_CREATE)
-        val value = intent.getIntExtra("data", 0)
-        initEvent(value)
+        val value = intent.getStringExtra("data")
+        Log.d("menuLIstActivity", value!!)
+
+        initEvent(value!!)
     }
 
 
 
-    fun initEvent(value : Int){
+    fun initEvent(value : String){
 
         Log.d("init", "event")
 
@@ -66,24 +68,12 @@ class MenuListActivity : AppCompatActivity(){
 
             finish()
         }
-        when(value) {
-            1 -> {
-                val coldBrewFragment = MenuListColdbrewFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fragmentBox, coldBrewFragment).commit()
-            }
-            2 -> {
-                val espressoFragment = MenuListEspressoFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fragmentBox, espressoFragment).commit()
-            }
-            3 -> {
-                val frappuccinoFragment = MenuListFrappuccinoFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fragmentBox, frappuccinoFragment).commit()
-            }
-            4 -> {
-                val teaFragment = MenuListTeaFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fragmentBox, teaFragment).commit()
-            }
-        }
+        var menuFragment = MenuListFragment()
+        var bundle = Bundle()
+        bundle.putString("category", value)
+        menuFragment.arguments = bundle
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentBox, menuFragment).commit()
+
 
     }
 }

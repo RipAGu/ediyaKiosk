@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartAcivity"
+    tools:context=".StartActivity"
     android:background="@color/ediyaBackground">
 
     <TextView
@@ -52,6 +52,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"/>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

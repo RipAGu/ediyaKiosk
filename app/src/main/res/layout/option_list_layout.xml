@@ -14,7 +14,6 @@
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         app:layout_constraintWidth_percent="0.6"
-        android:src="@mipmap/ediyalogo2"
         android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

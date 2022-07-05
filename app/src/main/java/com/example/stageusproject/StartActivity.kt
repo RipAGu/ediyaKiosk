@@ -12,7 +12,7 @@ import android.widget.Button
 import androidx.core.app.ServiceCompat.stopForeground
 import androidx.core.content.ContextCompat
 
-class StartAcivity : AppCompatActivity() {
+class StartActivity : AppCompatActivity() {
     var myService: CartService? = null
     private var isBound = false
 
@@ -49,7 +49,7 @@ class StartAcivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
-        var service = Intent(this, CartService::class.java)
+        val service = Intent(this, CartService::class.java)
         applicationContext.bindService(service, connection, Context.BIND_AUTO_CREATE)
         val startBtn = findViewById<Button>(R.id.startBtn)
         val delCartBtn = findViewById<Button>(R.id.delCartBtn)

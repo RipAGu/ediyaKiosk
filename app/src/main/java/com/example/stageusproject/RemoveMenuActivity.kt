@@ -64,7 +64,7 @@ class RemoveMenuActivity : AppCompatActivity() {
             for (index in 0 until cartList.size) {
                 val cart = layoutInflater.inflate(R.layout.remove_cart_view, layout, false)
                 cart.findViewById<TextView>(R.id.nameText).text = cartList[index].name
-                cart.findViewById<TextView>(R.id.priceText).text = cartList[index].price
+                cart.findViewById<TextView>(R.id.priceText).text = cartList[index].price.toString()
 
                 totalPrice += cartList[index].price.toInt()
                 layout.addView(cart)

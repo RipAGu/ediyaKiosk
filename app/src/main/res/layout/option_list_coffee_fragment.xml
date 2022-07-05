@@ -17,52 +17,28 @@
         tools:layout_editor_absoluteX="50dp">
 
         <Button
-            android:id="@+id/optionColdbrewBtn"
+            android:id="@+id/option1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:background="@drawable/round_rect"
             android:padding="15dp"
-            android:text="콜드브루"
             android:textSize="30dp"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/optionEspressoBtn"
+            android:id="@+id/option2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/round_rect"
             android:padding="15dp"
-            android:text="에스프레소"
             android:textSize="30dp"
             android:textStyle="bold"
 
             />
 
-        <Button
-            android:id="@+id/optionFrappuccinoBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/round_rect"
-            android:padding="15dp"
-            android:text="프라프치노"
-            android:textSize="30dp"
-            android:textStyle="bold"
 
-            />
-
-        <Button
-            android:id="@+id/optionTeaBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/round_rect"
-            android:padding="15dp"
-            android:text="티"
-            android:textSize="30dp"
-            android:textStyle="bold" />
 
         <Button
             android:id="@+id/backBtn"
