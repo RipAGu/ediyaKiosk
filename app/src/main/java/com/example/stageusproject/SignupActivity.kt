@@ -35,12 +35,12 @@ class SignupActivity : AppCompatActivity() {
     }
 
     fun initEvnet(){
-        var dupCheck: Boolean = false
-        var idValue: String = ""
-        var pwValue: String = ""
-        var pwCheck: String = ""
-        var nameValue: String = ""
-        var contactValue: String = ""
+        var dupCheck = false
+        var idValue = ""
+        var pwValue = ""
+        var pwCheck = ""
+        var nameValue = ""
+        var contactValue = ""
         val dupBtn = findViewById<Button>(R.id.dupBtn)
         val backBtn = findViewById<Button>(R.id.backBtn)
         val signupBtn = findViewById<Button>(R.id.signupBtn)

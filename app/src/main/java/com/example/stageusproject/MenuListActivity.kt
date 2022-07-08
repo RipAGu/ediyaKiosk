@@ -11,15 +11,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
-//각각의 메뉴판에서 올 data들
-interface CartData{
-    fun sendData(coffeeName : String, coffeePrice : String, coffeeImage : String)
-}
-
 class MenuListActivity : AppCompatActivity(){
-//    var nameInCart = arrayListOf<String>() //data취합
-//    var priceInCart = arrayListOf<String>()
-//    var imageInCart = arrayListOf<String>()
     var myService: CartService? = null
     private var isBound = false
 
@@ -47,25 +39,16 @@ class MenuListActivity : AppCompatActivity(){
         val service = Intent(this, CartService::class.java)
         applicationContext.bindService(service, connection, Context.BIND_AUTO_CREATE)
         val value = intent.getStringExtra("data")
-        Log.d("menuLIstActivity", value!!)
-
         initEvent(value!!)
     }
 
 
 
     fun initEvent(value : String){
-
-        Log.d("init", "event")
-
         val intent = Intent()
         val backBtn =findViewById<Button>(R.id.backBtn)
         backBtn.setOnClickListener{
-//            intent.putExtra("name", nameInCart) //activity종료시 보낼 data들 (고른 메뉴data들)
-//            intent.putExtra("price", priceInCart)
-//            intent.putExtra("image", imageInCart)
             setResult(Activity.RESULT_OK, intent)
-
             finish()
         }
         var menuFragment = MenuListFragment()

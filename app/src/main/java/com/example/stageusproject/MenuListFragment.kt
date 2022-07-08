@@ -83,7 +83,7 @@ class MenuListFragment : Fragment() {
 
     }
 
-    fun setView(content : View, contentNumber : Int, menuNumber : Int){
+    fun setView(content : View, contentNumber : Int, menuNumber : Int){ //View들의 동적할당 및 클릭이벤트 생성
         val linear = content.findViewById<LinearLayout>(linearViewList[contentNumber])
         content.findViewById<TextView>(textViewList[contentNumber]).text =
             "${menuData[menuNumber].menu_name}\n${menuData[menuNumber].menu_price}"
@@ -105,15 +105,9 @@ class MenuListFragment : Fragment() {
     }
 
     fun initEvent(myView : View){
-
-
         var menuNumber = 0
         val rowNumber = ceil((menuData.size.toDouble()) / 3).toInt()
-
         val table = myView.findViewById<TableLayout>(R.id.coffeeTable)
-
-        Log.d("nowMenu", menuData.toString())
-        Log.d("rownumber", rowNumber.toString())
 
         for(index in 0 until rowNumber){
             val content = layoutInflater.inflate(R.layout.menu_list_view, table, false)
@@ -124,7 +118,6 @@ class MenuListFragment : Fragment() {
                         menuNumber++
                     }
                 }
-
                 else{
                     for(contentNumber in 0 until (menuData.size % 3)){
                         setView(content, contentNumber, menuNumber)
@@ -132,19 +125,14 @@ class MenuListFragment : Fragment() {
                     }
                 }
             }
-
             else{
                 for(contentNumber in 0 until 3){
                     setView(content, contentNumber, menuNumber)
                     menuNumber++
                 }
             }
-
-
         table.addView(content)
         }
-
-
     }
 
 }

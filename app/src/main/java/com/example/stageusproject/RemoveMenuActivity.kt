@@ -54,8 +54,6 @@ class RemoveMenuActivity : AppCompatActivity() {
 
     fun initEvent(){
         val cartList = myService?.getCart()
-
-
         var totalPrice = 0
         val backBtn = findViewById<Button>(R.id.backBtn)
         val layout = findViewById<LinearLayout>(R.id.removeLayout)
@@ -65,10 +63,8 @@ class RemoveMenuActivity : AppCompatActivity() {
                 val cart = layoutInflater.inflate(R.layout.remove_cart_view, layout, false)
                 cart.findViewById<TextView>(R.id.nameText).text = cartList[index].name
                 cart.findViewById<TextView>(R.id.priceText).text = cartList[index].price.toString()
-
                 totalPrice += cartList[index].price.toInt()
                 layout.addView(cart)
-
                 cart.findViewById<LinearLayout>(R.id.removeLayout).setOnClickListener{
                     totalPrice -= cartList[index].price.toInt()
                     textTotalPrice.text = "총 금액 : ${totalPrice}원"

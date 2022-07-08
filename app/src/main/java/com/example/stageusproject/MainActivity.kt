@@ -30,8 +30,6 @@ class OptionActivity : AppCompatActivity(), DataFromFragment, DataFromRemover, C
     var imageInCart = arrayListOf<String>()
     var myService: CartService? = null
 
-
-
     private var isBound = false
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
@@ -39,12 +37,10 @@ class OptionActivity : AppCompatActivity(), DataFromFragment, DataFromRemover, C
             myService = binder.getService()
             isBound = true
         }
-
         override fun onServiceDisconnected(p0: ComponentName?) {
             isBound = false
         }
     }
-
     override fun sendData(requestType: String, requestData: ArrayList<String>?) {
         if(requestType == "name") nameInCart.addAll(requestData!!) //받아온 주문목록 취합
         else if(requestType == "price") priceInCart.addAll(requestData!!)
@@ -98,7 +94,4 @@ class OptionActivity : AppCompatActivity(), DataFromFragment, DataFromRemover, C
         var service = Intent(this, CartService::class.java)
         bindService(service, connection, Context.BIND_AUTO_CREATE)
     }
-
-
-
 }

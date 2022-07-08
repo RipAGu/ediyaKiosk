@@ -82,8 +82,6 @@ class MainCoffeeFragment : Fragment() {
         option1Btn.text = category[0].category_name
         option2Btn.text = category[1].category_name
 
-
-        //interface로 Acitity에 data 전송 -> fragment교체
         backBtn.setOnClickListener{
             changeInterface.change(2)
         }

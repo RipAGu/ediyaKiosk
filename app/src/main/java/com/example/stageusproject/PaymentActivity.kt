@@ -27,7 +27,6 @@ class PaymentActivity : AppCompatActivity() {
     val textViewList = listOf(R.id.text1, R.id.text2, R.id.text3)
     val imageViewList = listOf(R.id.image1, R.id.image2, R.id.image3)
     var myService: CartService? = null
-    val orderListData = OrderListData("3", 3 ,3)
     lateinit var retrofit : Retrofit
     lateinit var retrofitHttp : RetrofitService
 
@@ -50,8 +49,6 @@ class PaymentActivity : AppCompatActivity() {
         override fun onServiceDisconnected(p0: ComponentName?) {
             isBound = false
         }
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +58,6 @@ class PaymentActivity : AppCompatActivity() {
         initRetrofit()
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
-
 
     fun initRetrofit(){
         retrofit = RetrofitClient.initRetrofit()!!
@@ -142,7 +138,6 @@ class PaymentActivity : AppCompatActivity() {
 
         var nameNumber = 0
         textTotalPrice.text = "총 금액 : ${totalPrice}원"
-
         //동적할당 시작
         for(index in 0 until rowNumber){
             val content = layoutInflater.inflate(R.layout.menu_list_view, table, false)

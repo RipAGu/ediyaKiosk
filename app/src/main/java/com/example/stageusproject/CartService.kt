@@ -68,11 +68,11 @@ class CartService : Service() {
     fun deleteCart(){
         cartList.clear()
     }
-
     //notification 구현
     private var iconNotification: Bitmap? = null
     private var notification: Notification? = null
     var mNotificationManager: NotificationManager? = null
+
     private val mNotificationId = 123
     private fun generateForegroundNotification() {
         calTotalPrice()
@@ -122,14 +122,3 @@ class CartService : Service() {
 }
 
 data class InCartData(var name: String, var price: Int, var image: String)
-
-data class OrderListContent(
-    var name : String,
-    var count : Int,
-    var sum_price : Int
-)
-
-data class OrderList(
-    var order_list: List<OrderListContent>
-)
-

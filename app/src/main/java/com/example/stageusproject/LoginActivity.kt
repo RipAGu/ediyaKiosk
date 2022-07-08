@@ -35,13 +35,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_layout)
         val intent = Intent(this, CartService::class.java)
         applicationContext.bindService(intent, connection, Context.BIND_AUTO_CREATE)
-
         initRetrofit()
         initEvent()
     }
@@ -88,15 +86,12 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 })
-
         }
+
         val signupBtn = findViewById<Button>(R.id.signupBtn)
         signupBtn.setOnClickListener{
             val intent = Intent(applicationContext, SignupActivity::class.java)
             startActivity(intent)
         }
-
     }
-
-
 }
